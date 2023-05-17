@@ -11,18 +11,7 @@ import argparse
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 
-# --- Notes ----
-# check check if hooks are working - DONE. yes.
-# do not forget typehints - DONE: mypy working.
-
-# do not forget logging
-# docstrings
-# tests
-# feature-branch
-# --------------
-
-
-DEFAULT_MODEL = "../models/final_model-20230516T143657Z-001/final_model/"
+DEFAULT_MODEL = "../models/default_model/"
 
 parser = argparse.ArgumentParser("Create transript for mp3 files.")
 parser.add_argument(
@@ -55,6 +44,7 @@ args = parser.parse_args()
 
 def main(in_path: str, out_path: str, model_path: str) -> None:
     """This is the entry point for the CLI of the radioship transcript tool."""
+
     if not os.path.isdir(out_path):
         print(f"Output dir [{out_path}] does not exist!")
         create_q = input("Would you like to create it? y/n: ")
@@ -68,24 +58,38 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
     model = SpeechRecognitionModel(model_path)
     print(f"\nModel: {model_path} fetched\n")
 
-    print(f"Creating transcript for files in {in_path}. \nOutput dir: {out_path}")
     # get file_list
-    input_files = os.listdir(in_path)
-    for audio_file in input_files:
-        if os.path.isfile(audio_file):
-            # create transcript
-            make_transcript(audio_file, out_path, model)
-            print(f"transcipt created for {audio_file}")
+    print(f"Creating transcript for files in {in_path} \nOutput dir: {out_path}")
+    full_paths = [
+        os.path.abspath(os.path.join(in_path, f)) for f in os.listdir(in_path)
+    ]
+    mp3s = [e for e in full_paths if os.path.isfile(e) and e[-4:] == ".mp3"]
+
+    for mp3 in mp3s:
+        # create transcript
+        make_transcript(mp3, out_path, model)
 
 
-def make_transcript(audio_file: str, out_path: str, model) -> None: # what is the model type?
+def make_transcript(
+    audio_file: str, out_path: str, model: SpeechRecognitionModel
+) -> None:  # what is the model type?
     """Creates a transcirpt for a provided mp3 audio segment."""
+    transcriptions_without_decoder = model.transcribe([audio_file])
+    transcriptions_without_decoder = [
+        e["transcription"] for e in transcriptions_without_decoder
+    ]
+    print(transcriptions_without_decoder)
+    write_transcript(audio_file, out_path, transcriptions_without_decoder)
+    print(f"Transcipt created for {audio_file}")  # log this
 
-    # model. valami predict
-    # see transcription part in Zoli script
+
+def write_transcript(file_path: str, out_path: str, transcript: list[str]) -> None:
+    "Handle paths and file names, write output to .txt file."
+    _, base_name = os.path.split(os.path.splitext(file_path)[0])
+    file_name = os.path.join(out_path, base_name + ".txt")
+    with open(file_name, "w", encoding="utf-8") as file:
+        file.write("\n".join(transcript))
 
 
 if __name__ == "__main__":
-    main(
-        args.in_path, args.out_path, args.model_path
-    )  # pylint: disable=no-value-for-parameter
+    main(args.in_path, args.out_path, args.model_path)

@@ -7,9 +7,39 @@ There is a default model path provided that can be replaced."""
 
 import os
 import argparse
+import logging
+import sys
+import datetime
 
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
+# set up logger
+LOGS_FOLDER = os.path.realpath(__file__ + "../../../logs")
+if not os.path.isdir(LOGS_FOLDER):
+    os.mkdir(LOGS_FOLDER)
+now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
+log_name = os.path.join(LOGS_FOLDER, now + "_transcript_tool.log")
+
+logging.basicConfig(
+    filename=log_name,
+    filemode="a",
+    force=True,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.DEBUG,
+)
+numba_logger = logging.getLogger("numba")
+numba_logger.setLevel(logging.WARNING)
+
+# show logs on the console as well (for now). this may get behind a -v flag
+root = logging.getLogger()
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+root.addHandler(handler)
+
+NAME = "Senki"
+logging.debug("%s raised an error", NAME)
 
 DEFAULT_MODEL = "../models/default_model/"
 
@@ -72,7 +102,7 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
 
 def make_transcript(
     audio_file: str, out_path: str, model: SpeechRecognitionModel
-) -> None:  # what is the model type?
+) -> None:
     """Creates a transcirpt for a provided mp3 audio segment."""
     transcriptions_without_decoder = model.transcribe([audio_file])
     transcriptions_without_decoder = [

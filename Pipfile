@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 torch = "~=1.10"
 huggingsound = "*"
+pydub = "*"
+ffmpeg = "*"
+ffprobe = "*"
+inaspeechsegmenter = "*"
 
 [dev-packages]
 cookiecutter = "*"

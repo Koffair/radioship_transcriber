@@ -7,9 +7,6 @@ There is a default model path provided that can be replaced."""
 
 import radioship_transcripter.src.utils as utils
 
-# from src import utils
-
-
 import os
 import argparse
 import logging
@@ -19,7 +16,7 @@ import datetime
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 # set up logger
-LOGS_FOLDER = os.path.realpath(__file__ + "../../../logs")
+LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
 if not os.path.isdir(LOGS_FOLDER):
     os.mkdir(LOGS_FOLDER)
 now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
@@ -45,7 +42,8 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
-DEFAULT_MODEL = "../models/default_model/"
+DEFAULT_MODEL = os.path.abspath("radioship_transcripter/models/default_model/")
+# default model can't be local. this is just a placeholder.
 
 parser = argparse.ArgumentParser("Create transript for mp3 files.")
 parser.add_argument(
@@ -92,11 +90,11 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
     model = SpeechRecognitionModel(model_path)
     logging.info("Model loaded from: %s", model_path)
 
-    # create interim folders for processing slices & segments
-    if not os.path.isdir("../data/interim/slices"):
-        os.makedirs(os.path.abspath("../data/interim/slices"))
-    if not os.path.isdir("../data/interim/segments"):
-        os.makedirs(os.path.abspath("../data/interim/segments"))
+    # create interim folders for processing slices & segments - relative to __main__.py?
+    if not os.path.isdir("transcripter_interim_data/slices"):
+        os.makedirs(os.path.abspath("transcripter_interim_data/slices"))
+    if not os.path.isdir("transcripter_interim_data/segments"):
+        os.makedirs(os.path.abspath("transcripter_interim_data/segments"))
 
     # get file_list
     logging.info("Loading input .mp3 files from: %s", in_path)
@@ -114,5 +112,7 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
         utils.make_transcript(mp3, out_path, model)
 
 
+
 if __name__ == "__main__":
     main(args.in_path, args.out_path, args.model_path)
+

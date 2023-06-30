@@ -19,11 +19,11 @@ def make_transcript(
     # do slicing for the audio_file
     slicing(audio_file, AudioSegment)
     _, audio_file_name = separate_filename(audio_file)
-    slices_folder = os.path.join("../data/interim/slices", audio_file_name)
+    slices_folder = os.path.join("transcripter_interim_data/slices", audio_file_name)
 
     # do the segmenting:
     segmenting(slices_folder)
-    segment_folder = os.path.join("../data/interim/segments", audio_file_name)
+    segment_folder = os.path.join("transcripter_interim_data/segments", audio_file_name)
     segment_lst = [
         os.path.join(segment_folder, f) for f in sorted(os.listdir(segment_folder))
     ]
@@ -59,9 +59,9 @@ def slicing(audio_file: str, slicer: AudioSegment) -> None:
     minute = 2 * 60 * 1000
     _, base_name = separate_filename(audio_file)
     audio_file_slice_folder = os.path.join(
-        os.path.abspath("../data/interim/slices"), base_name
+        os.path.abspath("transcripter_interim_data/slices"), base_name
     )
-    print(audio_file_slice_folder)
+
     os.makedirs(audio_file_slice_folder, exist_ok=True)
     programme = slicer.from_mp3(audio_file)
 
@@ -73,7 +73,6 @@ def slicing(audio_file: str, slicer: AudioSegment) -> None:
         )
         slice_mp3.export(slice_name, format="mp3")
         logging.info("Just saved slice: %s", slice_name)
-    print("this SLICING function has finished tho.", audio_file_slice_folder)
 
 
 def segmenting(slices_folder: str) -> None:
@@ -86,7 +85,7 @@ def segmenting(slices_folder: str) -> None:
 
     _, folder_name = separate_filename(slices_folder)
     audio_file_segment_folder = os.path.join(
-        os.path.abspath("../data/interim/segments"), folder_name
+        os.path.abspath("transcripter_interim_data/segments"), folder_name
     )
     os.makedirs(audio_file_segment_folder, exist_ok=True)
 

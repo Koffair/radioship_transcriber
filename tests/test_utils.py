@@ -19,22 +19,25 @@ def set_up_slicing_for_side_effect_checks():
                                                             sample_width=3, 
                                                             channels=1)
     utils.slicing('fake_mp3_flie.mp3', mock_slicer)
-    current_dir = os.path.dirname("transcript_tool.py")  # or whatever the eintry point will be
+    current_dir = os.path.dirname(os.path.abspath("__main__.py"))  # or whatever the eintry point will be
     yield current_dir
     # Teardown - Remove the temporary folder
-    if os.path.exists(os.path.join(current_dir, '../data')):
-        shutil.rmtree(os.path.join(current_dir, '../data'))
+    if os.path.exists(os.path.join(current_dir, 'transcripter_interim_data/')):
+        shutil.rmtree(os.path.join(current_dir, 'transcripter_interim_data/'))
+    # this is not right. test should not be able to remove real dir.
+    # functions should not create paths for themselves. but be provided with as argument.
+    # then they will be fake-able -> testable.
 
 
 def test_slicing_creates_folder(set_up_slicing_for_side_effect_checks) -> None:
     current_dir = set_up_slicing_for_side_effect_checks
-    folder_path = os.path.join(current_dir, '../data/interim/slices/fake_mp3_flie')
+    folder_path = os.path.join(current_dir, 'transcripter_interim_data/slices/fake_mp3_flie')
     assert os.path.isdir(folder_path)
 
 
 def test_slicing_creates_slices(set_up_slicing_for_side_effect_checks) -> None:
     current_dir = set_up_slicing_for_side_effect_checks
-    file_path = os.path.join(current_dir, '../data/interim/slices/fake_mp3_flie/fake_mp3_flie_00000.0.mp3')
+    file_path = os.path.join(current_dir, 'transcripter_interim_data/slices/fake_mp3_flie/fake_mp3_flie_00000.0.mp3')
     assert os.path.isfile(file_path)
 
 

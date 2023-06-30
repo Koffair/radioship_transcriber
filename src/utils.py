@@ -17,8 +17,8 @@ def make_transcript(
     """Creates a transcirpt for a provided mp3 audio segment."""
 
     # do slicing for the audio_file
-    slicing(audio_file)
-    _, audio_file_name = separate_fileneme(audio_file)
+    slicing(audio_file, AudioSegment)
+    _, audio_file_name = separate_filename(audio_file)
     slices_folder = os.path.join("../data/interim/slices", audio_file_name)
 
     # do the segmenting:
@@ -47,22 +47,23 @@ def write_transcript(
     file_path: str, out_path: str, transcript: list[str], slice_meta: list[str]
 ) -> None:
     "Handle paths and file names, write output to .txt file."
-    _, base_name = separate_fileneme(file_path)
+    _, base_name = separate_filename(file_path)
     file_name = os.path.join(out_path, base_name + ".txt")
     lines = [l[0] + "\t" + l[1] for l in zip(slice_meta, transcript)]
     with open(file_name, "w", encoding="utf-8") as file:
         file.write("\n".join(lines))
 
 
-def slicing(audio_file: str) -> None:
+def slicing(audio_file: str, slicer: AudioSegment) -> None:
     "Slice up an audio file to smaller parts that can be fed to the segmenter"
     minute = 2 * 60 * 1000
-    _, base_name = separate_fileneme(audio_file)
+    _, base_name = separate_filename(audio_file)
     audio_file_slice_folder = os.path.join(
         os.path.abspath("../data/interim/slices"), base_name
     )
+    print(audio_file_slice_folder)
     os.makedirs(audio_file_slice_folder, exist_ok=True)
-    programme = AudioSegment.from_mp3(audio_file)
+    programme = slicer.from_mp3(audio_file)
 
     for i in range(0, len(programme), minute):
         slice_mp3 = programme[i : i + minute]
@@ -72,6 +73,7 @@ def slicing(audio_file: str) -> None:
         )
         slice_mp3.export(slice_name, format="mp3")
         logging.info("Just saved slice: %s", slice_name)
+    print("this SLICING function has finished tho.", audio_file_slice_folder)
 
 
 def segmenting(slices_folder: str) -> None:
@@ -82,7 +84,7 @@ def segmenting(slices_folder: str) -> None:
     ]
     slice_list = [f for f in slice_list if os.path.isfile(f)]
 
-    _, folder_name = separate_fileneme(slices_folder)
+    _, folder_name = separate_filename(slices_folder)
     audio_file_segment_folder = os.path.join(
         os.path.abspath("../data/interim/segments"), folder_name
     )
@@ -91,7 +93,7 @@ def segmenting(slices_folder: str) -> None:
     for slice_mp3 in slice_list:
         segmentation = seg(slice_mp3)
         programme = AudioSegment.from_mp3(slice_mp3)
-        _, outfile = separate_fileneme(slice_mp3)
+        _, outfile = separate_filename(slice_mp3)
         # avoid fails on '_' in filenames
         outfile_parts = outfile.split("_")
         slice_base = "_".join(outfile_parts[:-1])
@@ -112,7 +114,7 @@ def segmenting(slices_folder: str) -> None:
                 logging.info("Saved segment: %s", outfile)
 
 
-def separate_fileneme(verbose_filename: str) -> tuple[str, str]:
+def separate_filename(verbose_filename: str) -> tuple[str, str]:
     """Separate the path to a file and the filename without extension.
     return (path_to_file, filename_without_extension)"""
     return os.path.split(os.path.splitext(verbose_filename)[0])
@@ -131,6 +133,6 @@ def timestamp_segment(offset: float, seg_start: int, seg_end: int) -> tuple[str,
 
 def is_processed(mp3: str, out_path: str) -> bool:
     "Check wether the given audio file already has a transcript."
-    _, base_name = separate_fileneme(mp3)
+    _, base_name = separate_filename(mp3)
     file_name = os.path.join(out_path, base_name + ".txt")
     return os.path.isfile(file_name)

@@ -42,8 +42,7 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
-DEFAULT_MODEL = os.path.abspath("radioship_transcripter/models/default_model/")
-# default model can't be local. this is just a placeholder.
+DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
 
 parser = argparse.ArgumentParser("Create transript for mp3 files.")
 parser.add_argument(

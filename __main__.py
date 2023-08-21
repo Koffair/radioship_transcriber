@@ -15,6 +15,8 @@ import datetime
 
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
+
+
 # set up logger
 LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
 if not os.path.isdir(LOGS_FOLDER):
@@ -87,13 +89,15 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
 
     # fetch model
     model = SpeechRecognitionModel(model_path)
-    logging.info("Model loaded from: %s", model_path)
+    logging.info("Model %s loaded.", model_path)
 
-    # create interim folders for processing slices & segments - relative to __main__.py?
-    if not os.path.isdir("transcripter_interim_data/slices"):
-        os.makedirs(os.path.abspath("transcripter_interim_data/slices"))
-    if not os.path.isdir("transcripter_interim_data/segments"):
-        os.makedirs(os.path.abspath("transcripter_interim_data/segments"))
+    # create interim folders for processing slices & segments
+    slices_path = os.path.join(out_path, "interim_data/slices")
+    segments_path = os.path.join(out_path, "interim_data/segments")
+    if not os.path.isdir(slices_path):
+        os.makedirs(os.path.abspath(slices_path))
+    if not os.path.isdir(segments_path):
+        os.makedirs(os.path.abspath(segments_path))
 
     # get file_list
     logging.info("Loading input .mp3 files from: %s", in_path)

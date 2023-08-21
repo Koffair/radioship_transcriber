@@ -39,12 +39,15 @@ def make_transcript(
     ]
     # send in the metadata, and zip it to the transcript lines, write them together.
     slice_meta = [e.split("_")[-1].strip(".mp3") for e in segment_lst]
-    write_transcript(audio_file_path, out_path, transcriptions_without_decoder, slice_meta)
+    write_transcript(
+        audio_file_path, out_path, transcriptions_without_decoder, slice_meta
+    )
     logging.info("Transcipt created for: %s", audio_file_path)
 
     # DELETE THE INTERIM FOLDERS!
     shutil.rmtree(segment_folder)
     shutil.rmtree(slices_folder)
+
 
 def slicing(slices_folder: str, audio_file_path: str, slicer: AudioSegment) -> None:
     "Slice up an audio file to smaller parts that can be fed to the segmenter"

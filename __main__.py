@@ -16,7 +16,6 @@ import datetime
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 
-
 # set up logger
 LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
 if not os.path.isdir(LOGS_FOLDER):
@@ -115,7 +114,5 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
         utils.make_transcript(mp3, out_path, model)
 
 
-
 if __name__ == "__main__":
     main(args.in_path, args.out_path, args.model_path)
-

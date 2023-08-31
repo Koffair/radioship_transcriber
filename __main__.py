@@ -16,64 +16,6 @@ import datetime
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 
-# set up logger
-LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
-if not os.path.isdir(LOGS_FOLDER):
-    os.mkdir(LOGS_FOLDER)
-now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
-log_name = os.path.join(LOGS_FOLDER, now + "_transcript_tool.log")
-
-logging.basicConfig(
-    filename=log_name,
-    filemode="a",
-    force=True,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.DEBUG,
-)
-numba_logger = logging.getLogger("numba")
-numba_logger.setLevel(logging.WARNING)
-pydub_logger = logging.getLogger("pydub")
-pydub_logger.setLevel(logging.WARNING)
-
-# show logs on the console as well (for now). this may get behind a -v flag
-root = logging.getLogger()
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-root.addHandler(handler)
-
-DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
-
-parser = argparse.ArgumentParser("Create transript for mp3 files.")
-parser.add_argument(
-    "-i",
-    "--in_path",
-    type=str,
-    metavar="",
-    required=True,
-    help="Path to input file or directory",
-)
-parser.add_argument(
-    "-o",
-    "--out_path",
-    type=str,
-    metavar="",
-    required=True,
-    help="Path to output directory",
-)
-parser.add_argument(
-    "-m",
-    "--model_path",
-    type=str,
-    metavar="",
-    default=DEFAULT_MODEL,
-    required=False,
-    help="Address to transcripter model",
-)
-args = parser.parse_args()
-
-
 def main(in_path: str, out_path: str, model_path: str) -> None:
     """This is the entry point for the CLI of the radioship transcript tool."""
 
@@ -85,6 +27,12 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
             print(f"Output dir [{out_path}] created!\n")
         else:
             return
+    # test if the output folder is writable
+    if not os.access(out_path, os.W_OK):
+        raise PermissionError(f"Output dir [{out_path}] is not writable!")
+    # test if the input folder is readable
+    if not os.access(in_path, os.R_OK):
+        raise PermissionError(f"Input dir [{in_path}] is not readable!")
 
     # fetch model
     model = SpeechRecognitionModel(model_path)
@@ -115,4 +63,63 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
 
 
 if __name__ == "__main__":
+    # set up logger
+    LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
+    if not os.path.isdir(LOGS_FOLDER):
+        os.mkdir(LOGS_FOLDER)
+    now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
+    log_name = os.path.join(LOGS_FOLDER, now + "_transcript_tool.log")
+
+    logging.basicConfig(
+        filename=log_name,
+        filemode="a",
+        force=True,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.DEBUG,
+    )
+    numba_logger = logging.getLogger("numba")
+    numba_logger.setLevel(logging.WARNING)
+    pydub_logger = logging.getLogger("pydub")
+    pydub_logger.setLevel(logging.WARNING)
+
+    # show logs on the console as well (for now). this may get behind a -v flag
+    root = logging.getLogger()
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+
+    DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
+
+    parser = argparse.ArgumentParser("Create transript for mp3 files.")
+    parser.add_argument(
+        "-i",
+        "--in_path",
+        type=str,
+        metavar="",
+        required=True,
+        help="Path to input file or directory",
+    )
+    parser.add_argument(
+        "-o",
+        "--out_path",
+        type=str,
+        metavar="",
+        required=True,
+        help="Path to output directory",
+    )
+    parser.add_argument(
+        "-m",
+        "--model_path",
+        type=str,
+        metavar="",
+        default=DEFAULT_MODEL,
+        required=False,
+        help="Address to transcripter model",
+    )
+    args = parser.parse_args()
+
     main(args.in_path, args.out_path, args.model_path)

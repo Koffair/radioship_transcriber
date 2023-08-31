@@ -45,7 +45,7 @@ def make_transcript(
     logging.info("Transcipt created for: %s", audio_file_path)
 
     # DELETE THE INTERIM FOLDERS!
-    shutil.rmtree(segment_folder)
+    shutil.rmtree(segment_folder)  # should these be temporary folders instead?
     shutil.rmtree(slices_folder)
 
 
@@ -61,8 +61,6 @@ def slicing(slices_folder: str, audio_file_path: str, slicer: AudioSegment) -> N
         slice_name = os.path.join(
             slices_folder, audio_file_name + f"_{start_second:07}.mp3"
         )
-        # is this a valid path tho?
-        # slice_name = f"{slices_folder}/{audio_file_name}_{start_second:07}.mp3"
         slice_mp3.export(slice_name, format="mp3")
         logging.info("Just saved slice: %s", slice_name)
 

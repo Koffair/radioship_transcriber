@@ -68,7 +68,7 @@ if __name__ == "__main__":
     if not os.path.isdir(LOGS_FOLDER):
         os.mkdir(LOGS_FOLDER)
     now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
-    log_name = os.path.join(LOGS_FOLDER, now + "_transcript_tool.log")
+    log_name = os.path.join(LOGS_FOLDER, now + "_transcriber_tool.log")
 
     logging.basicConfig(
         filename=log_name,
@@ -81,6 +81,8 @@ if __name__ == "__main__":
     numba_logger.setLevel(logging.WARNING)
     pydub_logger = logging.getLogger("pydub")
     pydub_logger.setLevel(logging.WARNING)
+    urllib3_logger = logging.getLogger("urllib3")
+    urllib3_logger.setLevel(logging.WARNING)
 
     # show logs on the console as well (for now). this may get behind a -v flag
     root = logging.getLogger()

@@ -2,6 +2,8 @@
 It contains various utility functions."""
 
 import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # suppress tensorflow warnings.
 import logging
 import datetime
 import shutil
@@ -9,6 +11,12 @@ import shutil
 from pydub import AudioSegment  # type: ignore
 from inaSpeechSegmenter import Segmenter  # type: ignore
 from huggingsound import SpeechRecognitionModel  # type: ignore
+
+import warnings
+
+warnings.filterwarnings(
+    "ignore", message=r"arrays to stack must be", category=FutureWarning
+)
 
 
 def make_transcript(

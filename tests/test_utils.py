@@ -2,7 +2,7 @@
 
 """Tests for `radioship_transcripter` package utils module."""
 
-import pydub # type: ignore
+import pydub  # type: ignore
 import os
 import tempfile
 import radioship_transcripter.src.utils as utils

@@ -1,4 +1,4 @@
-# radioship_transcripter
+# radioship_transcriber
 This is a CLI interface for the transcripter tool created by the radioship project  
 
 ### usage: 

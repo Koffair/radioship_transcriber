@@ -10,7 +10,8 @@ pydub = "*"
 ffmpeg = "*"
 ffprobe = "*"
 inaspeechsegmenter = "*"
-radioship-transcripter = {editable = true, path = "."}
+radioship-transcriber = {editable = true, path = "."}
+huggingface-hub = {extras = ["cli"], version = "*"}
 
 [dev-packages]
 cookiecutter = "*"

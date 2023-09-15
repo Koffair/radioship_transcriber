@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Tests for `radioship_transcripter` package utils module."""
+"""Tests for `radioship_transcriber` package utils module."""
 
 import pydub  # type: ignore
 import os

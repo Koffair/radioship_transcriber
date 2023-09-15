@@ -27,12 +27,50 @@ def main(in_path: str, out_path: str, model_path: str) -> None:
             print(f"Output dir [{out_path}] created!\n")
         else:
             return
+
     # test if the output folder is writable
     if not os.access(out_path, os.W_OK):
-        raise PermissionError(f"Output dir [{out_path}] is not writable!")
+        raise PermissionError(
+            f"""Output dir [{out_path}] is not writable!
+
+                              
+You do not have the necessary permissions to access or modify the specified folders. To resolve this issue:
+
+- On Unix (Linux/Mac):
+  - Use the 'chmod' command to change permissions on the folders. For example:
+
+  chmod +rw /path/to/folder
+
+- On Windows:
+  - Right-click on the folder, choose 'Properties.'
+  - Go to the 'Security' tab and click 'Edit' to change permissions.
+  - Add your user account and grant 'Read' and 'Write' permissions.
+  
+If you're not sure how to do this, consider seeking assistance from your system administrator or referring to your operating system's documentation.
+"""
+        )
+
     # test if the input folder is readable
     if not os.access(in_path, os.R_OK):
-        raise PermissionError(f"Input dir [{in_path}] is not readable!")
+        raise PermissionError(
+            f"""Input dir [{in_path}] is not readable!
+
+                              
+You do not have the necessary permissions to access or modify the specified folders. To resolve this issue:
+
+- On Unix (Linux/Mac):
+  - Use the 'chmod' command to change permissions on the folders. For example:
+
+  chmod +rw /path/to/folder
+
+- On Windows:
+  - Right-click on the folder, choose 'Properties.'
+  - Go to the 'Security' tab and click 'Edit' to change permissions.
+  - Add your user account and grant 'Read' and 'Write' permissions.
+  
+If you're not sure how to do this, consider seeking assistance from your system administrator or referring to your operating system's documentation.
+"""
+        )
 
     # fetch model
     model = SpeechRecognitionModel(model_path)

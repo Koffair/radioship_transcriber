@@ -3,7 +3,7 @@
 import pytest
 import os
 import tempfile
-from radioship_transcripter import __main__ as main
+from radioship_transcriber import __main__ as main
 
 
 def test_main_read_permission_error():

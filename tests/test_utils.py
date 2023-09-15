@@ -5,7 +5,7 @@
 import pydub  # type: ignore
 import os
 import tempfile
-import radioship_transcripter.src.utils as utils
+import radioship_transcriber.src.utils as utils
 
 
 def test_separate_filename():

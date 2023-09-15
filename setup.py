@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
-requirements = ["torch~=1.10",
+requirements = ["torch~=1.12.1",
         "huggingsound",
         "pydub",
         "ffmpeg",

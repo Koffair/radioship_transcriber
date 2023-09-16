@@ -8,6 +8,9 @@ If no model path is given, it will use our hungarian model as a default.
 The transcriber is dependent on the [huggingsoud](https://github.com/jonatasgrosman/huggingsound) package, that uses a specific range of versions of torch. Since older versions of torch are not compatible with the latest versions of python **it is important to use python 3.10.10**.
 We recommend using [pyenv](https://github.com/pyenv/pyenv) to install it. Here is a great [tutorial](https://realpython.com/intro-to-pyenv/) for that.
 
+You will also need ffmpeg to process .mp3 files. If you don't have it on your machine:  
+`sudo apt-get install ffmpeg`  
+
 Then create a new virtual environment with [pipenv](https://pipenv.pypa.io/en/latest/):  
 `pipenv install --python 3.10.10`  
 
@@ -16,9 +19,6 @@ Activate the new env with:
 
 Make sure it really uses python 3.10.10! Then install the radioship_transcriber from this repo:  
 `pipenv install git+https://github.com/Koffair/radioship_transcriber.git#egg=radioship_transcriber`  
-
-You will need ffmpeg to process .mp3 files. If you don't have it on your machine:  
-`sudo apt-get install ffmpeg`  
 
 
 ### Usage:

@@ -1,5 +1,5 @@
 # radioship_transcriber
-This is a python package containing the Command Line Interface for the tradioship_transcriber.  
+This is a python package containing the Command Line Interface for the radioship_transcriber.  
 
 The transcriber creates transcripts for .mp3 files in .txt format using neural networks created for this purpose. It takes an input folder path, an output folder path, and an optional model path that can be a local path or a url on huggingface.co.
 If no model path is given, it will use our hungarian model as a default.

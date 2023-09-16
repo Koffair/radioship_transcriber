@@ -1,4 +1,4 @@
-"""Top-level package for radioship_transcriber."""
+"""Source code"""
 
 __author__ = """Jozsef Venczeli"""
 __email__ = "venczeli.jozsef@gmail.com"

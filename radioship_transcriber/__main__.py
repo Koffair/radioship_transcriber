@@ -5,7 +5,7 @@ The input folder should contain mp3 files.
 
 There is a default model path provided that can be replaced."""
 
-import radioship_transcriber.radioship_transcriber.utils as utils
+import radioship_transcriber.utils as utils
 
 import os
 import argparse
@@ -71,6 +71,38 @@ You do not have the necessary permissions to access or modify the specified fold
 If you're not sure how to do this, consider seeking assistance from your system administrator or referring to your operating system's documentation.
 """
         )
+    
+    # set up logger
+    LOGS_FOLDER = os.path.join(out_path, "logs")
+    if not os.path.isdir(LOGS_FOLDER):
+        os.mkdir(LOGS_FOLDER)
+    now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
+    log_name = os.path.join(LOGS_FOLDER, now + "_transcriber_tool.log")
+
+    logging.basicConfig(
+        filename=log_name,
+        filemode="a",
+        force=True,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.DEBUG,
+    )
+    numba_logger = logging.getLogger("numba")
+    numba_logger.setLevel(logging.WARNING)
+    pydub_logger = logging.getLogger("pydub")
+    pydub_logger.setLevel(logging.WARNING)
+    urllib3_logger = logging.getLogger("urllib3")
+    urllib3_logger.setLevel(logging.WARNING)
+
+    # show logs on the console as well (for now). this may get behind a -v flag
+    root = logging.getLogger()
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+
 
     # fetch model
     model = SpeechRecognitionModel(model_path)
@@ -100,36 +132,6 @@ If you're not sure how to do this, consider seeking assistance from your system 
         utils.make_transcript(mp3, out_path, model)
 
 def set_up_and_run_main():
-    # set up logger
-    LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
-    if not os.path.isdir(LOGS_FOLDER):
-        os.mkdir(LOGS_FOLDER)
-    now = datetime.datetime.now().strftime("%Y.%m.%d_%H:%M:%S")
-    log_name = os.path.join(LOGS_FOLDER, now + "_transcriber_tool.log")
-
-    logging.basicConfig(
-        filename=log_name,
-        filemode="a",
-        force=True,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        level=logging.DEBUG,
-    )
-    numba_logger = logging.getLogger("numba")
-    numba_logger.setLevel(logging.WARNING)
-    pydub_logger = logging.getLogger("pydub")
-    pydub_logger.setLevel(logging.WARNING)
-    urllib3_logger = logging.getLogger("urllib3")
-    urllib3_logger.setLevel(logging.WARNING)
-
-    # show logs on the console as well (for now). this may get behind a -v flag
-    root = logging.getLogger()
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-    handler.setFormatter(formatter)
-    root.addHandler(handler)
 
     DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
 

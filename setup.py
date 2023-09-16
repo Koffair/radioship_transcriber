@@ -47,7 +47,7 @@ setup(
     description="Interface and wrapper to run radioship_transcriber",
     entry_points={
         "console_scripts": [
-            "radioship_transcriber=radioship_transcriber.__main__:main",
+            "radioship_transcriber=radioship_transcriber.__main__:set_up_and_run_main",
         ],
     },
     install_requires=requirements,

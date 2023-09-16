@@ -99,8 +99,7 @@ If you're not sure how to do this, consider seeking assistance from your system 
         # create transcript
         utils.make_transcript(mp3, out_path, model)
 
-
-if __name__ == "__main__":
+def set_up_and_run_main():
     # set up logger
     LOGS_FOLDER = os.path.realpath(__file__ + "../../logs")
     if not os.path.isdir(LOGS_FOLDER):
@@ -160,6 +159,11 @@ if __name__ == "__main__":
         required=False,
         help="Address to transcripter model",
     )
+    print("does this even run? YES!")
     args = parser.parse_args()
 
     main(args.in_path, args.out_path, args.model_path)
+
+
+if __name__ == "__main__":
+    set_up_and_run_main()

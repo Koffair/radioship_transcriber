@@ -2182,11 +2182,11 @@
         },
         "transformers": {
             "hashes": [
-                "sha256:0630c2d26448d7c6cb78435e6c43910c89e99387badea6be1f565ffa3f093f1d",
-                "sha256:744265e9f0724d22c229938f28376af54abce730ef647f35bd1685abf49912a4"
+                "sha256:47dd36f302afec86d9cdcacab61bbd0296e6bb02e64d2ed7855daaab14ee290e",
+                "sha256:5a9a757bea5b5a1b94796805bcb5978b552208a3ac193f46edda66be6f4a5488"
             ],
             "markers": "python_full_version >= '3.8.0'",
-            "version": "==4.33.1"
+            "version": "==4.33.2"
         },
         "typing-extensions": {
             "hashes": [
@@ -2782,11 +2782,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:87816de144bf46d161bd5b3e8f5596b16cade3b80be537087334b26bc5c177f3",
-                "sha256:94bb59643083ebd60dc996d043497479ee554381fbc5307763915cda49b0e78f"
+                "sha256:24437fbf6f4d3fe6efd0eb9d67e24dd9106db99af5ceb27996a5f7895f24bf1b",
+                "sha256:d43d52b86b15918c137e3a74fff5224f60385cd0e9c38e99d07c257f02f151a5"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.5.28"
+            "version": "==2.5.29"
         },
         "idna": {
             "hashes": [

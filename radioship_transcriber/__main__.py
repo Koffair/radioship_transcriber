@@ -132,7 +132,7 @@ If you're not sure how to do this, consider seeking assistance from your system 
         utils.make_transcript(mp3, out_path, model)
 
 def main():
-    "Get arguments from command"
+    """This is the entry point for the CLI of the radioship transcript tool."""
     DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
 
     parser = argparse.ArgumentParser("Create transript for mp3 files.")

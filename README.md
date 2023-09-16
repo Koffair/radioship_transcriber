@@ -17,6 +17,10 @@ Activate the new env with:
 Make sure it really uses python 3.10.10! Then install the radioship_transcriber from this repo:  
 `pipenv install git+https://github.com/Koffair/radioship_transcriber.git#egg=radioship_transcriber`  
 
+You will need ffmpeg to process .mp3 files. If you don't have it on your machine:  
+`sudo apt-get install ffmpeg`  
+
+
 ### Usage:
 Now, if your virtual environment is active, you can call the transcriber the following ways (no need to type python):
 - to use default model:  

@@ -1,7 +1,37 @@
 # radioship_transcriber
-This is a CLI interface for the transcripter tool created by the radioship project  
+This is a python package containing the Command Line Interface for the tradioship_transcriber.  
 
-### usage: 
+The transcriber creates transcripts for .mp3 files in .txt format. It takes an input folder path, an output folder path, and an optional model path that can be a lolcal path or a url on huggingface.co.
+If no model path is given, it will use our hungarian model as a default.
+
+### Install:
+The transcriber is dependent on the [huggingsoud](https://github.com/jonatasgrosman/huggingsound) package, that uses a specific range of versions of torch. Since older versions of torch are not compatible with the latest versions of python **it is important to use python 3.10.10**.
+For this we recommend to install it with [pyenv](https://github.com/pyenv/pyenv), here is a great [tutorial](https://realpython.com/intro-to-pyenv/) for that.
+
+Then create a new virtual environment with [pipenv](https://pipenv.pypa.io/en/latest/):  
+`pipenv install --python 3.10.10`  
+
+Activate the new env with:  
+`pipenv shell`  
+
+Make sure it really uses python 3.10.10! Then install the radioship_transcriber from this repo:  
+`pipenv install git+https://github.com/Koffair/radioship_transcriber.git#egg=radioship_transcriber`  
+
+### Usage:
+Now, if your virtual environment is active, you can call the transcriber the following ways (no need to type python):
+- to use default model:  
+`radioship_transcriber -i path/to/input/ -o path/to/output/`
+
+- to use your own or any other model:  
+`radioship_transcriber -i path/to/input/ -o path/to/output/ -m path/to/other/model/`  
+
+The input folder should contain .mp3 files. The output folder will have .txt files, and the logs in a separate folder.
+If the specified model is not present, the transcriber will download and cash it for later use.
+If you want to remove a cashed model, use:  
+`huggingface-cli delete-cache`
+
+
+### man: 
 Create transript for mp3 files. [-h] -i  -o  [-m]
   
 options:  
@@ -10,43 +40,9 @@ options:
   -o , --out_path     Path to output directory  
   -m , --model_path   Address to transcripter model  
   
-### Example:
-to use default model:  
-python transcript_tool.py -i ../test_input/ -o ../test_output/   
 
-to use other model:  
-python transcript_tool.py -i ../test_input/ -o ../test_output/ -m ../models/new_model/  
 
-### Repo structure:
-.  
-├── Pipfile  
-├── Pipfile.lock  
-├── README.md  
-├── src  
-│   ├── __init__.py  
-│   └── transcript_tool.py  
-├── models  
-│   ├── default_model  
-│   │   ├── all_results.json  
-│   │   ├── config.json  
-│   │   ├── preprocessor_config.json  
-│   │   ├── pytorch_model.bin  
-│   │   ├── special_tokens_map.json  
-│   │   ├── tokenizer_config.json  
-│   │   ├── trainer_state.json  
-│   │   ├── train_results.json  
-│   │   └── vocab.json  
-├── test_input  
-│   ├── test_file.mp3  
-├── test_output  
-│   ├── test_file.txt  
-  
 
-## TODO
-- logging
-- doctests
-- slicing audio (dies on longer sections. how long?)
-- writin readme for the interface
 
-- currently works w local model: extend to & test w cloud
+
 

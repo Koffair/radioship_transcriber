@@ -16,8 +16,8 @@ import datetime
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 
-def main(in_path: str, out_path: str, model_path: str) -> None:
-    """This is the entry point for the CLI of the radioship transcript tool."""
+def transcribe(in_path: str, out_path: str, model_path: str) -> None:
+    """Set up logger and interim folders, create transcriptions."""
 
     if not os.path.isdir(out_path):
         print(f"Output dir [{out_path}] does not exist!")
@@ -131,8 +131,8 @@ If you're not sure how to do this, consider seeking assistance from your system 
         # create transcript
         utils.make_transcript(mp3, out_path, model)
 
-def set_up_and_run_main():
-
+def main():
+    "Get arguments from command"
     DEFAULT_MODEL = "radioship/wav2vec2-large-xlsr-53-hu"
 
     parser = argparse.ArgumentParser("Create transript for mp3 files.")
@@ -163,8 +163,8 @@ def set_up_and_run_main():
     )
     args = parser.parse_args()
 
-    main(args.in_path, args.out_path, args.model_path)
+    transcribe(args.in_path, args.out_path, args.model_path)
 
 
 if __name__ == "__main__":
-    set_up_and_run_main()
+    main()

@@ -5,7 +5,7 @@ The input folder should contain mp3 files.
 
 There is a default model path provided that can be replaced."""
 
-import radioship_transcriber.src.utils as utils
+import radioship_transcriber.radioship_transcriber.utils as utils
 
 import os
 import argparse

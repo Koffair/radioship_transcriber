@@ -1,1 +1,1 @@
-"""Unit test package for radioship_transcript_tool."""
+"""Unit test package for radioship_transcriber."""

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-"""Tests for `radioship_transcripter` package utils module."""
+"""Tests for `radioship_transcriber` package utils module."""
 
 import pydub  # type: ignore
 import os
 import tempfile
-import radioship_transcripter.src.utils as utils
+import radioship_transcriber.utils as utils
 
 
 def test_separate_filename():

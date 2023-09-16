@@ -161,7 +161,6 @@ def set_up_and_run_main():
         required=False,
         help="Address to transcripter model",
     )
-    print("does this even run? YES!")
     args = parser.parse_args()
 
     main(args.in_path, args.out_path, args.model_path)

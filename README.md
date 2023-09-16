@@ -6,7 +6,7 @@ If no model path is given, it will use our hungarian model as a default.
 
 ### Install:
 The transcriber is dependent on the [huggingsoud](https://github.com/jonatasgrosman/huggingsound) package, that uses a specific range of versions of torch. Since older versions of torch are not compatible with the latest versions of python **it is important to use python 3.10.10**.
-For this we recommend to install it with [pyenv](https://github.com/pyenv/pyenv), here is a great [tutorial](https://realpython.com/intro-to-pyenv/) for that.
+We recommend using [pyenv](https://github.com/pyenv/pyenv) to install it. Here is a great [tutorial](https://realpython.com/intro-to-pyenv/) for that.
 
 Then create a new virtual environment with [pipenv](https://pipenv.pypa.io/en/latest/):  
 `pipenv install --python 3.10.10`  

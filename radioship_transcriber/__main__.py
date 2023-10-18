@@ -16,7 +16,7 @@ import datetime
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
 
-def transcribe(in_path: str, out_path: str, model_path: str) -> None:
+def transcribe(in_path: str, out_path: str, model_path: str, timestamps: bool) -> None:
     """Set up logger and interim folders, create transcriptions."""
 
     if not os.path.isdir(out_path):
@@ -71,7 +71,7 @@ You do not have the necessary permissions to access or modify the specified fold
 If you're not sure how to do this, consider seeking assistance from your system administrator or referring to your operating system's documentation.
 """
         )
-    
+
     # set up logger
     LOGS_FOLDER = os.path.join(out_path, "logs")
     if not os.path.isdir(LOGS_FOLDER):
@@ -103,6 +103,7 @@ If you're not sure how to do this, consider seeking assistance from your system 
     handler.setFormatter(formatter)
     root.addHandler(handler)
 
+    logging.info("Timstamp is set to: %i", timestamps)
 
     # fetch model
     model = SpeechRecognitionModel(model_path)
@@ -129,7 +130,8 @@ If you're not sure how to do this, consider seeking assistance from your system 
             logging.info("%s already has a transcirpt in %s", mp3, out_path)
             continue
         # create transcript
-        utils.make_transcript(mp3, out_path, model)
+        utils.make_transcript(mp3, out_path, model, timestamps)
+
 
 def main():
     """This is the entry point for the CLI of the radioship transcript tool."""
@@ -161,9 +163,15 @@ def main():
         required=False,
         help="Address to transcripter model",
     )
+
+    parser.add_argument("--timestamp", action="store_true", required=False)
+    parser.add_argument(
+        "--no-timestamp", dest="timestamp", action="store_false", required=False
+    )
+    parser.set_defaults(timestamp=True)
     args = parser.parse_args()
 
-    transcribe(args.in_path, args.out_path, args.model_path)
+    transcribe(args.in_path, args.out_path, args.model_path, args.timestamp)
 
 
 if __name__ == "__main__":

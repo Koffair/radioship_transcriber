@@ -20,7 +20,7 @@ warnings.filterwarnings(
 
 
 def make_transcript(
-    audio_file_path: str, out_path: str, model: SpeechRecognitionModel
+    audio_file_path: str, out_path: str, model: SpeechRecognitionModel, timestamps: bool
 ) -> None:
     """Creates a transcirpt for a provided mp3 audio segment."""
 
@@ -48,7 +48,11 @@ def make_transcript(
     # send in the metadata, and zip it to the transcript lines, write them together.
     slice_meta = [e.split("_")[-1].strip(".mp3") for e in segment_lst]
     write_transcript(
-        audio_file_path, out_path, transcriptions_without_decoder, slice_meta
+        audio_file_path,
+        out_path,
+        transcriptions_without_decoder,
+        slice_meta,
+        timestamps,
     )
     logging.info("Transcipt created for: %s", audio_file_path)
 
@@ -106,14 +110,19 @@ def segmenting(slices_folder: str, segments_folder: str) -> None:
 
 
 def write_transcript(
-    file_path: str, out_path: str, transcript: list[str], slice_meta: list[str]
+    file_path: str,
+    out_path: str,
+    transcript: list[str],
+    slice_meta: list[str],
+    timestamps: bool,
 ) -> None:
     "Handle paths and file names, write output to .txt file."
     _, base_name = separate_filename(file_path)
     file_name = os.path.join(out_path, base_name + ".txt")
-    lines = [l[0] + "\t" + l[1] for l in zip(slice_meta, transcript)]
+    if timestamps:
+        transcript = [l[0] + "\t" + l[1] for l in zip(slice_meta, transcript)]
     with open(file_name, "w", encoding="utf-8") as file:
-        file.write("\n".join(lines))
+        file.write("\n".join(transcript))
 
 
 def separate_filename(verbose_filename: str) -> tuple[str, str]:

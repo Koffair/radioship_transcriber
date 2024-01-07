@@ -110,27 +110,18 @@ If you're not sure how to do this, consider seeking assistance from your system 
     logging.info("Model %s loaded.", model_path)
 
     # create interim folders for processing slices & segments
-    slices_path = os.path.join(out_path, "interim_data/slices")
     segments_path = os.path.join(out_path, "interim_data/segments")
-    if not os.path.isdir(slices_path):
-        os.makedirs(os.path.abspath(slices_path))
-    if not os.path.isdir(segments_path):
-        os.makedirs(os.path.abspath(segments_path))
 
     # get file_list
-    logging.info("Loading input .mp3 files from: %s", in_path)
+    logging.info("Looking for segment folders in: %s", in_path)
     full_paths = [
         os.path.abspath(os.path.join(in_path, f)) for f in os.listdir(in_path)
     ]
-    mp3s = [e for e in full_paths if os.path.isfile(e) and e[-4:] == ".mp3"]
+    mp3_folders = [e for e in full_paths if os.path.isdir(e)] # we take folders now
 
-    for mp3 in mp3s:
-        # check outpout to avoid reruns
-        if utils.is_processed(mp3, out_path):
-            logging.info("%s already has a transcirpt in %s", mp3, out_path)
-            continue
+    for mp3_folder in mp3_folders:
         # create transcript
-        utils.make_transcript(mp3, out_path, model, timestamps)
+        utils.make_transcript(mp3_folder, out_path, model, timestamps)
 
 
 def main():

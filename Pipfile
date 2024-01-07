@@ -7,11 +7,10 @@ name = "pypi"
 torch = "~=1.10"
 huggingsound = "*"
 pydub = "*"
-ffmpeg = "*"
-ffprobe = "*"
 inaspeechsegmenter = "*"
 huggingface-hub = {extras = ["cli"], version = "*"}
 radioship-transcriber = {editable = true, path = "."}
+ffprobe = "*"
 
 [dev-packages]
 cookiecutter = "*"

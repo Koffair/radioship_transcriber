@@ -25,21 +25,21 @@ def make_transcript(
     """Creates a transcirpt for a provided mp3 audio segment."""
 
     # prepare subfolders in slicing and segmenting
-    _, audio_file_name = separate_filename(audio_file_path)
-    slices_folder = os.path.join(out_path, "interim_data/slices", audio_file_name)
-    segment_folder = os.path.join(out_path, "interim_data/segments", audio_file_name)
-    os.makedirs(slices_folder, exist_ok=True)
-    os.makedirs(segment_folder, exist_ok=True)
+    # _, audio_file_name = separate_filename(audio_file_path)
+    # segment_folder = os.path.join(out_path, "interim_data/segments", audio_file_name)
 
-    # do slicing for the audio_file
-    slicing(slices_folder, audio_file_path, AudioSegment)
+    # # do slicing for the audio_file
+    # slicing(slices_folder, audio_file_path, AudioSegment)
 
-    # do the segmenting:
-    segmenting(slices_folder, segment_folder)
-    segment_lst = [
-        os.path.join(segment_folder, f) for f in sorted(os.listdir(segment_folder))
-    ]
-    segment_lst = [f for f in segment_lst if os.path.isfile(f)]
+    # # do the segmenting:
+    # segmenting(slices_folder, segment_folder)
+    # segment_lst = [
+    #     os.path.join(segment_folder, f) for f in sorted(os.listdir(segment_folder))
+    # ]
+    segment_lst = [os.path.join(audio_file_path, f) for f in os.listdir(audio_file_path)
+                    if os.path.isfile(os.path.join(audio_file_path, f))]
+    print("audio path", audio_file_path)
+    print("segment list:", segment_lst)
 
     transcriptions_without_decoder = model.transcribe(segment_lst)
     transcriptions_without_decoder = [
@@ -56,9 +56,10 @@ def make_transcript(
     )
     logging.info("Transcipt created for: %s", audio_file_path)
 
-    # DELETE THE INTERIM FOLDERS!
-    shutil.rmtree(segment_folder)  # should these be temporary folders instead?
-    shutil.rmtree(slices_folder)
+    # I sould have a switch for deleting the inputs.
+    # # DELETE THE INTERIM FOLDERS!
+    # shutil.rmtree(segment_folder)  # should these be temporary folders instead?
+    # shutil.rmtree(slices_folder)
 
 
 def slicing(slices_folder: str, audio_file_path: str, slicer: AudioSegment) -> None:
@@ -128,8 +129,10 @@ def write_transcript(
 def separate_filename(verbose_filename: str) -> tuple[str, str]:
     """Separate the path to a file and the filename without extension.
     return (path_to_file, filename_without_extension)"""
-    return os.path.split(os.path.splitext(verbose_filename)[0])
-
+    print(verbose_filename)
+    out = os.path.split(os.path.splitext(verbose_filename)[0])
+    print (out)
+    return out
 
 def timestamp_segment(offset: float, seg_start: int, seg_end: int) -> tuple[str, str]:
     "Create timestamp from offset and time inteval start/end times. All inputs should be in seconds."

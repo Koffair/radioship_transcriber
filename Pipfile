@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-torch = "~=1.10"
-huggingsound = "*"
-pydub = "*"
-inaspeechsegmenter = "*"
+huggingsound = {git = "https://github.com/jonatasgrosman/huggingsound.git"}
 huggingface-hub = {extras = ["cli"], version = "*"}
 radioship-transcriber = {editable = true, path = "."}
 ffprobe = "*"
+torch = "*"
+torchvision = "*"
+torchaudio = "*"
 
 [dev-packages]
 cookiecutter = "*"
@@ -20,7 +20,6 @@ black = "*"
 pylint = "*"
 mypy = "*"
 coverage = "*"
-huggingface-hub = {extras = ["cli"], version = "*"}
 
 [requires]
 python_version = "3.10.10"

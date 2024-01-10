@@ -12,6 +12,7 @@ import argparse
 import logging
 import sys
 import datetime
+import torch
 
 from huggingsound import SpeechRecognitionModel  # type: ignore
 
@@ -105,8 +106,17 @@ If you're not sure how to do this, consider seeking assistance from your system 
 
     logging.info("Timstamp is set to: %i", timestamps)
 
+    device_str = "cuda" if torch.cuda.is_available() else "cpu"
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    print("DEVICE:", device_str, device)
+    batch_size = 1
+    # model = SpeechRecognitionModel("radioship/wav2vec2-large-xlsr-53-hu", device=device_str)
+    # model.to(device)
+
+
     # fetch model
-    model = SpeechRecognitionModel(model_path)
+    model = SpeechRecognitionModel(model_path, device=device_str)
     logging.info("Model %s loaded.", model_path)
 
     # create interim folders for processing slices & segments

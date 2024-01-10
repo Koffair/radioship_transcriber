@@ -37,7 +37,8 @@ def make_transcript(
     #     os.path.join(segment_folder, f) for f in sorted(os.listdir(segment_folder))
     # ]
     segment_lst = [os.path.join(audio_file_path, f) for f in os.listdir(audio_file_path)
-                    if os.path.isfile(os.path.join(audio_file_path, f))]
+                    if os.path.isfile(os.path.join(audio_file_path, f))
+                    and f.endswith(".mp3")]
     print("audio path", audio_file_path)
     print("segment list:", segment_lst)
 
